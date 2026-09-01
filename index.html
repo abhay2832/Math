@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="color-scheme" content="light dark">
+    <title>Math Learn Pro</title>
+    <style>
+        /* DESIGN SYSTEM & VARIABLES */
+        :root {
+            --bg: #f0f4f8; --text: #1e293b; --card: rgba(255,255,255,0.85); --card-border: rgba(255,255,255,0.5);
+            --primary: #4f46e5; --primary-hover: #4338ca; --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
+            --shadow: 0 10px 25px -5px rgba(0,0,0,0.1); --glass: blur(12px);
+        }
+        .dark-mode {
+            --bg: #0f172a; --text: #f8fafc; --card: rgba(30,41,59,0.85); --card-border: rgba(255,255,255,0.1);
+            --shadow: 0 10px 25px -5px rgba(0,0,0,0.5);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text); transition: 0.3s ease; min-height: 100vh; overflow-x: hidden; padding-bottom: 30px; }
+        h2 { font-weight: 800; letter-spacing: -0.02em; }
+        h3 { font-weight: 700; }
+
+        /* BACKGROUND GLOW */
+        body::before {
+            content: ''; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(79,70,229,0.08) 0%, transparent 50%);
+            z-index: -1; pointer-events: none;
+        }
+
+        /* LAYOUT & PAGES */
+        .page { display: none; padding: 20px; max-width: 900px; margin: 0 auto; animation: fadeUp 0.4s ease; }
+        .page.active { display: block; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @media (prefers-reduced-motion: reduce) {
+            .page { animation: none; }
+        }
+
+        /* MARQUEE (CSS-driven, replaces deprecated <marquee>, respects reduced-motion) */
+        .marquee-wrap { background: var(--primary); color: white; padding: 10px 0; overflow: hidden; white-space: nowrap; }
+        .marquee-track { display: inline-block; padding-left: 100%; font-size: 14px; font-weight: 600; animation: marqueeScroll 16s linear infinite; }
+        @keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+        @media (prefers-reduced-motion: reduce) {
+            .marquee-track { animation: none; padding-left: 16px; }
+        }
+
+        /* HEADER */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: var(--card); backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; }
+        .top-bar h2 { font-weight: 800; color: var(--primary); cursor: pointer; }
+        .icon-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text); padding: 5px 10px; border-radius: 8px; transition: 0.2s; }
+        .icon-btn:hover { background: rgba(128,128,128,0.1); }
+
+        /* DASHBOARD GRID */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; padding-top: 15px; }
+        .glass-card { background: var(--card); backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass); border: 1px solid var(--card-border); border-radius: 16px; padding: 20px 10px; text-align: center; box-shadow: var(--shadow); cursor: pointer; transition: 0.2s; }
+        .glass-card:hover { transform: translateY(-3px); border-color: var(--primary); }
+        .glass-card .icon { font-size: 2.2rem; margin-bottom: 10px; display: block; }
+        .glass-card h3 { font-size: 1rem; font-weight: 600; }
+
+        /* CONTROLS & INPUTS */
+        .panel { background: var(--card); border: 1px solid var(--card-border); border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 10px; box-shadow: var(--shadow); }
+        input, select { flex: 1; min-width: 150px; padding: 12px; border-radius: 8px; border: 1px solid rgba(128,128,128,0.3); background: transparent; color: var(--text); font-size: 1rem; outline: none; }
+        input:focus, select:focus { border-color: var(--primary); }
+        .btn { padding: 12px 20px; border-radius: 8px; border: none; background: var(--primary); color: white; font-weight: 600; cursor: pointer; transition: 0.2s; text-align: center; }
+        .btn:hover { background: var(--primary-hover); }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        button:focus-visible, input:focus-visible, select:focus-visible {
+            outline: 3px solid var(--primary); outline-offset: 2px;
+        }
+
+        /* DATA LISTS */
+        .list-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; max-height: 65vh; overflow-y: auto; padding-right: 5px; }
+        .list-item { background: var(--card); border: 1px solid var(--card-border); padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 1.1rem; font-weight: 500; box-shadow: 0 2px 5px rgba(0,0,0,0.05); gap: 8px; }
+        .list-item b { color: var(--primary); font-size: 1.2rem; }
+
+        /* QUIZ & MOCK TEST */
+        .exam-box { background: var(--card); border-radius: 16px; padding: 25px; text-align: center; border: 1px solid var(--card-border); box-shadow: var(--shadow); }
+        .q-text { font-size: 2rem; font-weight: 800; margin: 20px 0; color: var(--primary); word-break: break-word; }
+        .opt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .opt-btn { padding: 15px; font-size: clamp(0.95rem, 4vw, 1.2rem); border-radius: 10px; background: transparent; border: 2px solid var(--card-border); color: var(--text); cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .opt-btn:active { transform: scale(0.98); }
+        .opt-btn.correct { background: var(--success); color: white; border-color: var(--success); }
+        .opt-btn.wrong { background: var(--danger); color: white; border-color: var(--danger); }
+        .opt-btn:disabled { cursor: not-allowed; }
+        .opt-btn:disabled:not(.correct):not(.wrong) { opacity: 0.45; }
+
+        /* TOAST */
+        #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text); color: var(--bg); padding: 12px 25px; border-radius: 30px; font-weight: 600; opacity: 0; transition: 0.3s; z-index: 1000; max-width: 90vw; text-align: center; }
+        #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <div class="marquee-wrap" id="marquee">
+        <div class="marquee-track">Welcome to Math Learn Pro. Master Basics, Play Quizzes, and Crack Army GD &amp; UP Police Exams! 🎯</div>
+    </div>
+
+    <div id="page-home" class="page active" style="text-align:center; padding-top:20vh;">
+        <h1 style="font-size: 3.5rem; background: linear-gradient(135deg, var(--primary), #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom:10px;">Math Learn</h1>
+        <p style="font-size:1.2rem; margin-bottom:30px; opacity:0.8;">Premium Offline Educational Suite</p>
+        <button class="btn" style="font-size:1.5rem; padding:15px 50px; border-radius:30px; box-shadow:var(--shadow);" onclick="openPage('dashboard')">ENTER</button>
+    </div>
+
+    <div class="top-bar" id="top-bar" style="display:none;">
+        <h2 onclick="openPage('dashboard')">Math Learn</h2>
+        <div>
+            <button class="icon-btn" onclick="toggleTheme()" title="Theme">🌗</button>
+            <button class="icon-btn" onclick="openPage('settings')" title="Settings">⚙️</button>
+        </div>
+    </div>
+
+    <div id="page-dashboard" class="page">
+        <h3>Quick Tools &amp; Tests</h3>
+        <div class="grid">
+            <div class="glass-card" onclick="openPage('tables')"><span class="icon">✖️</span><h3>Tables</h3></div>
+            <div class="glass-card" onclick="setupDynamic('squares')"><span class="icon">🟦</span><h3>Squares</h3></div>
+            <div class="glass-card" onclick="setupDynamic('cubes')"><span class="icon">🧊</span><h3>Cubes</h3></div>
+            <div class="glass-card" onclick="setupDynamic('roots')"><span class="icon">🌱</span><h3>Roots</h3></div>
+            <div class="glass-card" onclick="openPage('solver')"><span class="icon">🧮</span><h3>Smart Solver</h3></div>
+            <div class="glass-card" onclick="openPage('quiz')"><span class="icon">🎯</span><h3>Speed Quiz</h3></div>
+            <div class="glass-card" onclick="openPage('mock')"><span class="icon">📝</span><h3>Mock Test</h3></div>
+            <div class="glass-card" onclick="openPage('papers')"><span class="icon">📄</span><h3>Prev Papers</h3></div>
+            <div class="glass-card" onclick="openPage('timetable')"><span class="icon">📅</span><h3>Timetable</h3></div>
+            <div class="glass-card" onclick="openPage('progress')"><span class="icon">📈</span><h3>Progress</h3></div>
+        </div>
+
+        <h3 style="margin-top:35px; border-top: 1px solid var(--card-border); padding-top: 15px;">Mathematics Modules</h3>
+        <p style="font-size: 0.9rem; opacity: 0.7; margin-bottom: 10px;">Select a module to solve problems.</p>
+        <div class="grid">
+            <div class="glass-card" onclick="openTopic('arithmetic')"><span class="icon">🔢</span><h3>Basic Arithmetic</h3></div>
+            <div class="glass-card" onclick="openTopic('percentage')"><span class="icon">⚖️</span><h3>Percent &amp; Ratio</h3></div>
+            <div class="glass-card" onclick="openTopic('profit')"><span class="icon">💰</span><h3>Profit &amp; Loss</h3></div>
+            <div class="glass-card" onclick="openTopic('time')"><span class="icon">⏳</span><h3>Time Based</h3></div>
+            <div class="glass-card" onclick="openTopic('algebra')"><span class="icon">🧮</span><h3>Algebra</h3></div>
+            <div class="glass-card" onclick="openTopic('geometry')"><span class="icon">📐</span><h3>Geometry</h3></div>
+            <div class="glass-card" onclick="openTopic('mensuration')"><span class="icon">📏</span><h3>Mensuration</h3></div>
+            <div class="glass-card" onclick="openTopic('trigo')"><span class="icon">🔺</span><h3>Trigonometry</h3></div>
+            <div class="glass-card" onclick="openTopic('stats')"><span class="icon">📊</span><h3>Statistics &amp; DI</h3></div>
+            <div class="glass-card" onclick="openTopic('advanced')"><span class="icon">🧠</span><h3>Advanced Math</h3></div>
+        </div>
+    </div>
+
+    <div id="page-topic" class="page">
+        <button class="btn btn-outline" onclick="openPage('dashboard')" style="margin-bottom:15px;">← Back</button>
+        <h2 id="topic-title">Module Title</h2>
+
+        <div class="exam-box" style="text-align:left; border-top:3px solid var(--primary); margin-top:20px;">
+            <h3 style="color:var(--primary); margin-bottom:15px; font-size:1.1rem;">Select Question Type:</h3>
+
+            <select id="calc-selector" onchange="loadCalculator()" style="width:100%; padding:12px; margin-bottom:20px; border-radius:8px; border:2px solid var(--primary); background:var(--bg); color:var(--text); font-weight:bold; outline:none; cursor:pointer;">
+            </select>
+
+            <div id="calc-inputs" style="display:flex; flex-direction:column; gap:12px;"></div>
+
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button class="btn" onclick="runCalculator()" style="flex:1;">Calculate</button>
+                <button class="btn btn-outline" onclick="loadCalculator()" style="flex:1;">Clear</button>
+            </div>
+
+            <div id="module-output" style="margin-top:20px; padding:15px; background:rgba(79,70,229,0.1); border-radius:8px; display:none; border-left: 5px solid var(--primary); color:var(--text); line-height:1.6;"></div>
+        </div>
+    </div>
+
+    <div id="page-tables" class="page">
+        <button class="btn btn-outline" onclick="openPage('dashboard')" style="margin-bottom:15px;">← Back</button>
+        <h2>Multiplication Tables</h2>
+        <div class="panel">
+            <input type="number" id="t-num" placeholder="Table No. (2-1000)" min="2" max="1000">
+            <input type="number" id="t-filt" placeholder="Show first N rows (1-50)" min="1" max="50">
+            <button class="btn" onclick="genTable()">Generate</button>
+        </div>
+        <div class="list-grid" id="t-list"></div>
+    </div>
+
+    <div id="page-dynamic" class="page">
+        <button class="btn btn-outline" onclick="openPage('dashboard')" style="margin-bottom:15px;">← Back</button>
+        <h2 id="dyn-title">Data</h2>
+        <div class="panel">
+            <input type="number" id="dyn-search" placeholder="Search Base Number..." oninput="filterDynamic()">
+        </div>
+        <div class="list-grid" id="dyn-list"></div>
+    </div>
+
+    <div id="page-solver" class="page">
+        <button class="btn btn-outline" onclick="openPage('dashboard')" style="margin-bottom:15px;">← Back</button>
+        <h2>Smart Math Solver</h2>
+        <div class="panel">
+            <input type="text" id="solve-in" placeholder="Enter equation (e.g., 2 + 5 * 3)">
+            <button class="btn" onclick="solveEquation()">Solve Step-by-Step</button>
+        </div>
+        <div style="display:flex; gap:6px; margin:-6px 0 15px; flex-wrap:wrap;">
+            <button type="button" class="btn btn-outline" style="padding:8px 16px;" onclick="insertSolveChar('+')">+</button>
+            <button type="button" class="btn btn-outline" style="padding:8px 16px;" onclick="insertSolveChar('-')">−</button>
+            <button type="button" class="btn btn-outline" style="padding:8px 16px;" onclick="insertSolveChar('*')">×</button>
+            <button type="button" class="btn btn-outline" style="padding:8px 16px;" onclick="insertSolveChar('/')">÷</button>
+            <button type="button" class="btn btn-outline" style="padding:8px 16px;" onclick="insertSolveChar('(')">(</button>
+            <button type="button" class="btn btn-outline" style="padding:8px 16px;" onclick="insertSolveChar(')')">)</button>
+            <button type="button" class="btn btn-outline" style="padding:8px 16px;" onclick="clearSolveInput()">C</button>
+        </div>
+        <div class="exam-box" id="solve-out" style="text-align:left; font-size:1.1rem; line-height:1.6; display:none;"></div>
+    </div>
+
+    <div id="page-quiz" class="page">
+        <button class="btn btn-outline" onclick="openPage('dashboard')" style="margin-bottom:15px;">← Back</button>
+
+        <div id="quiz-setup" class="exam-box">
+            <h2>Math Speed Quiz</h2>
+            <select id="q-cat" style="width:100%; margin:15px 0;">
+                <option value="mix">Mixed Operations</option>
+                <option value="mult">Multiplication &amp; Tables</option>
+                <option value="add">Addition &amp; Subtraction</option>
+            </select>
+            <button class="btn" style="width:100%;" onclick="startQuiz()">Start 60s Challenge</button>
+        </div>
+
+        <div id="quiz-play" class="exam-box" style="display:none;">
+            <div style="display:flex; justify-content:space-between; font-weight:bold; color:var(--primary);">
+                <span id="q-score">Score: 0</span>
+                <span id="q-timer" style="color:var(--danger)">⏱ 60s</span>
+            </div>
+            <div class="q-text" id="q-text">5 × 8 = ?</div>
+            <div class="opt-grid" id="q-options"></div>
+        </div>
+
+        <div id="quiz-result" class="exam-box" style="display:none;">
+            <h2 id="qr-title">Time's Up!</h2>
+            <div class="q-text" id="qr-score">Score: 0</div>
+            <button class="btn" onclick="openPage('dashboard')">Finish</button>
+        </div>
+    </div>
+
+    <div id="page-mock" class="page">
+        <button class="btn btn-outline" onclick="openPage('dashboard')" style="margin-bottom:15px;">← Back</button>
+
+        <div id="mock-setup" class="exam-box">
+            <h2>Army GD &amp; UP Police Mock</h2>
+            <p>5 Questions | +2 for Correct | -0.5 for Wrong</p>
+            <button class="btn" style="width:100%; margin-top:15px;" onclick="startMock()">Start Mock Test</button>
+        </div>
+
+        <div id="mock-play" class="exam-box" style="display:none;">
+            <div style="display:flex; justify-content:space-between; font-weight:bold;">
+                <span id="m-count">Q 1/5</span>
+                <span style="color:var(--warning)">Mock Test Running</span>
+            </div>
+            <div class="q-text" id="m-text" style="font-size:1.5rem;">Question...</div>
+            <div class="opt-grid" id="m-options"></div>
+        </div>
+
+        <div id="mock-result" class="exam-box" style="display:none;">
+            <h2>Mock Test Report</h2>
+            <div id="mr-stats" style="font-size:1.2rem; line-height:1.8; margin:20px 0; text-align:left;"></div>
+            <button class="btn" onclick="openPage('dashboard')">Return to Dashboard</button>
+        </div>
+    </div>
+
+    <div id="page-papers" class="page">
+        <button class="btn btn-outline" onclick="openPage('dashboard')" style="margin-bottom:15px;">← Back</button>
+        <h2>Previous Year Vault</h2>
+        <div class="panel">
+            <select id="paper-select" onchange="loadPaper()">
+                <option value="">Select Exam Paper...</option>
+                <option value="army">Army Agniveer GD (Maths Practice Set)</option>
+                <option value="up">UP Police Constable (Maths Practice Set)</option>
+            </select>
+        </div>
+        <div id="paper-content" style="display:none;"></div>
+    </div>
+
+    <div id="page-timetable" class="page">
+        <button class="btn btn-outline" onclick="openPage('dashboard')" style="margin-bottom:15px;">← Back</button>
+        <h2>Study Timetable</h2>
+        <div class="panel">
+            <input type="text" id="tt-task" placeholder="E.g., Practice Percentage">
+            <input type="time" id="tt-time">
+            <button class="btn" onclick="addTask()">Add</button>
+        </div>
+        <div id="tt-list"></div>
+    </div>
+
+    <div id="page-progress" class="page">
+        <button class="btn btn-outline" onclick="openPage('dashboard')" style="margin-bottom:15px;">← Back</button>
+        <h2>Your Progress</h2>
+        <div class="grid">
+            <div class="glass-card"><h3 id="p-streak" style="font-size:2rem; color:var(--primary);">1</h3><p>Day Streak 🔥</p></div>
+            <div class="glass-card"><h3 id="p-score" style="font-size:2rem; color:var(--success);">0</h3><p>High Score 🏆</p></div>
+        </div>
+    </div>
+
+    <div id="page-settings" class="page">
+        <button class="btn btn-outline" onclick="openPage('dashboard')" style="margin-bottom:15px;">← Back</button>
+        <h2>Settings</h2>
+        <div class="panel" style="flex-direction:column;">
+            <button class="btn btn-outline" onclick="toggleTheme()">🌗 Toggle Dark Mode</button>
+            <button class="btn" style="background:var(--danger);" onclick="resetData(this)">🗑️ Reset All Data</button>
+        </div>
+    </div>
+
+    <div id="toast">Message</div>
+
+    <script>
+        /* =========================================================
+           STORAGE HELPER — wraps localStorage with JSON + a safe
+           in-memory fallback so the app never crashes even if
+           storage is blocked (e.g. private mode, sandboxed preview).
+           ========================================================= */
+        const Store = {
+            _mem: {},
+            get(key, fallback) {
+                try {
+                    const v = localStorage.getItem(key);
+                    return v === null ? fallback : JSON.parse(v);
+                } catch (e) {
+                    return (key in this._mem) ? this._mem[key] : fallback;
+                }
+            },
+            set(key, value) {
+                try {
+                    localStorage.setItem(key, JSON.stringify(value));
+                } catch (e) {
+                    this._mem[key] = value;
+                }
+            },
+            remove(key) {
+                try { localStorage.removeItem(key); } catch (e) {}
+                delete this._mem[key];
+            }
+        };
+
+        /* =========================================================
+           GLOBAL STATE
+           ========================================================= */
+        let currentTopicKey = null;
+        let dynState = { type: 'squares', data: [] };
+        let quizState = { score: 0, timeLeft: 60, timer: null, category: 'mix', currentAnswer: null, locked: false };
+        let mockState = { questions: [], current: 0, score: 0, correctCount: 0, wrongCount: 0 };
+        let timetableTasks = [];
+        let resetConfirmPending = false;
+
+        /* =========================================================
+           CORE SYSTEM & NAVIGATION
+           ========================================================= */
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            if (t) {
+                t.innerText = msg;
+                t.classList.add('show');
+                clearTimeout(t._hideTimer);
+                t._hideTimer = setTimeout(() => t.classList.remove('show'), 2500);
+            }
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const theme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+            Store.set('ml_theme', theme);
+        }
+
+        function openPage(pageName) {
+            try {
+                if (pageName !== 'quiz' && quizState.timer) {
+                    clearInterval(quizState.timer);
+                    quizState.timer = null;
+                }
+
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+                if (pageName === 'dashboard') {
+                    const topBar = document.getElementById('top-bar');
+                    const marquee = document.getElementById('marquee');
+                    if (topBar) topBar.style.display = 'flex';
+                    if (marquee) marquee.style.display = 'none';
+                }
+
+                if (pageName === 'quiz') {
+                    document.getElementById('quiz-setup').style.display = 'block';
+                    document.getElementById('quiz-play').style.display = 'none';
+                    document.getElementById('quiz-result').style.display = 'none';
+                }
+                if (pageName === 'mock') {
+                    document.getElementById('mock-setup').style.display = 'block';
+                    document.getElementById('mock-play').style.display = 'none';
+                    document.getElementById('mock-result').style.display = 'none';
+                }
+
+                const targetPage = document.getElementById('page-' + pageName);
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                }
+                window.scrollTo(0, 0);
+            } catch (error) {
+                console.error('Navigation error: ', error);
+            }
+        }
+
+        window.onload = () => {
+            try {
+                if (Store.get('ml_theme', 'light') === 'dark') document.body.classList.add('dark-mode');
+            } catch (e) { console.error(e); }
+            try { loadTasks(); } catch (e) { console.error('Timetable load error:', e); }
+            try { updateStats(); } catch (e) { console.error('Stats load error:', e); }
+            try { initEnterKeyHandlers(); } catch (e) { console.error('Key handler error:', e); }
+        };
+
+        function initEnterKeyHandlers() {
+            const bind = (id, fn) => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') { e.preventDefault(); fn(); }
+                });
+            };
+            bind('t-num', genTable);
+            bind('t-filt', genTable);
+            bind('solve-in', solveEquation);
+            bind('tt-task', addTask);
+            bind('tt-time', addTask);
+        }
+
+        /* =========================================================
+           MULTIPLICATION TABLES
+           ========================================================= */
+        function genTable() {
+            const num = parseInt(document.getElementById('t-num').value, 10);
+            const filtRaw = parseInt(document.getElementById('t-filt').value, 10);
+            const listEl = document.getElementById('t-list');
+            listEl.innerHTML = '';
+
+            if (!num || num < 2 || num > 1000) {
+                showToast('Table number 2 se 1000 ke beech dalein');
+                return;
+            }
+            const limit = (filtRaw && filtRaw >= 1 && filtRaw <= 50) ? filtRaw : 20;
+
+            const frag = document.createDocumentFragment();
+            for (let i = 1; i <= limit; i++) {
+                const item = document.createElement('div');
+                item.className = 'list-item';
+                item.innerHTML = `<span>${num} × ${i}</span><b>${num * i}</b>`;
+                frag.appendChild(item);
+            }
+            listEl.appendChild(frag);
+        }
+
+        /* =========================================================
+           DYNAMIC MODULE — Squares / Cubes / Roots
+           ========================================================= */
+        function setupDynamic(type) {
+            dynState.type = type;
+            const titles = { squares: 'Squares (1² to 50²)', cubes: 'Cubes (1³ to 30³)', roots: 'Square Roots (√1 to √100)' };
+            document.getElementById('dyn-title').innerText = titles[type] || 'Data';
+            document.getElementById('dyn-search').value = '';
+            buildDynamicData();
+            renderDynamicList(dynState.data);
+            openPage('dynamic');
+        }
+
+        function buildDynamicData() {
+            const data = [];
+            if (dynState.type === 'squares') {
+                for (let i = 1; i <= 50; i++) data.push({ base: i, result: i * i });
+            } else if (dynState.type === 'cubes') {
+                for (let i = 1; i <= 30; i++) data.push({ base: i, result: i * i * i });
+            } else {
+                for (let i = 1; i <= 100; i++) data.push({ base: i, result: Math.sqrt(i) });
+            }
+            dynState.data = data;
+        }
+
+        function renderDynamicList(data) {
+            const listEl = document.getElementById('dyn-list');
+            listEl.innerHTML = '';
+            if (!data.length) {
+                listEl.innerHTML = '<p style="opacity:.7; padding:15px 5px;">No matches found.</p>';
+                return;
+            }
+            const frag = document.createDocumentFragment();
+            data.forEach(d => {
+                const item = document.createElement('div');
+                item.className = 'list-item';
+                let label, value;
+                if (dynState.type === 'squares') { label = `${d.base}²`; value = d.result; }
+                else if (dynState.type === 'cubes') { label = `${d.base}³`; value = d.result; }
+                else { label = `√${d.base}`; value = Number.isInteger(d.result) ? d.result : d.result.toFixed(3); }
+                item.innerHTML = `<span>${label}</span><b>${value}</b>`;
+                frag.appendChild(item);
+            });
+            listEl.appendChild(frag);
+        }
+
+        function filterDynamic() {
+            const q = document.getElementById('dyn-search').value.trim();
+            if (!q) { renderDynamicList(dynState.data); return; }
+            const filtered = dynState.data.filter(d => d.base.toString().startsWith(q));
+            renderDynamicList(filtered);
+        }
+
+        /* =========================================================
+           HELPER MATH FUNCTIONS
+           ========================================================= */
+        function gcd2(x, y) { x = Math.abs(x); y = Math.abs(y); return y === 0 ? x : gcd2(y, x % y); }
+        function round(n) { return Math.round((n + Number.EPSILON) * 1e6) / 1e6; }
+
+        /* =========================================================
+           MATH TOPICS — data-driven calculator modules
+           ========================================================= */
+        const mathTopics = {
+            arithmetic: {
+                title: 'Basic Arithmetic',
+                calcs: [
+                    {
+                        name: 'HCF & LCM',
+                        inputs: ['First Number', 'Second Number'],
+                        compute: ([a, b]) => {
+                            a = Math.round(a); b = Math.round(b);
+                            if (a === 0 && b === 0) throw new Error('Both numbers cannot be zero');
+                            const h = gcd2(a, b);
+                            const l = Math.abs(a * b) / h;
+                            return {
+                                result: `HCF = ${h}, LCM = ${l}`,
+                                steps: [
+                                    `HCF (Highest Common Factor) of ${a} and ${b} = ${h}`,
+                                    `LCM = (${a} × ${b}) / HCF = ${Math.abs(a * b)} / ${h} = ${l}`
+                                ]
+                            };
+                        }
+                    },
+                    {
+                        name: 'Average of 2 Numbers',
+                        inputs: ['First Number', 'Second Number'],
+                        compute: ([a, b]) => {
+                            const avg = round((a + b) / 2);
+                            return { result: avg, steps: [`Average = (${a} + ${b}) / 2 = ${round(a + b)} / 2 = ${avg}`] };
+                        }
+                    },
+                    {
+                        name: 'Simple Interest',
+                        inputs: ['Principal (₹)', 'Rate (% per year)', 'Time (years)'],
+                        compute: ([p, r, t]) => {
+                            const si = round((p * r * t) / 100);
+                            const total = round(p + si);
+                            return {
+                                result: `SI = ₹${si}, Total = ₹${total}`,
+                                steps: [
+                                    `SI = (P × R × T) / 100 = (${p} × ${r} × ${t}) / 100 = ₹${si}`,
+                                    `Total Amount = Principal + SI = ${p} + ${si} = ₹${total}`
+                                ]
+                            };
+                        }
+                    }
+                ]
+            },
+            percentage: {
+                title: 'Percent & Ratio',
+                calcs: [
+                    {
+                        name: 'X% of a Number',
+                        inputs: ['Percentage (%)', 'Number'],
+                        compute: ([p, n]) => {
+                            const res = round((p * n) / 100);
+                            return { result: res, steps: [`${p}% of ${n} = (${p} × ${n}) / 100 = ${res}`] };
+                        }
+                    },
+                    {
+                        name: 'Percentage Change',
+                        inputs: ['Old Value', 'New Value'],
+                        compute: ([o, n]) => {
+                            if (o === 0) throw new Error("Old value can't be 0");
+                            const change = round(((n - o) / o) * 100);
+                            const dir = change >= 0 ? 'increase' : 'decrease';
+                            return {
+                                result: `${Math.abs(change)}% ${dir}`,
+                                steps: [
+                                    `Change = New − Old = ${n} − ${o} = ${round(n - o)}`,
+                                    `% Change = (${round(n - o)} / ${o}) × 100 = ${change}%`
+                                ]
+                            };
+                        }
+                    },
+                    {
+                        name: 'Simplify Ratio A:B',
+                        inputs: ['A', 'B'],
+                        compute: ([a, b]) => {
+                            a = Math.round(a); b = Math.round(b);
+                            if (a === 0 && b === 0) throw new Error('Both values cannot be zero');
+                            const h = gcd2(a, b) || 1;
+                            return { result: `${a / h} : ${b / h}`, steps: [`HCF of ${a} and ${b} = ${h}`, `Divide both by ${h}: ${a}/${h} : ${b}/${h} = ${a / h} : ${b / h}`] };
+                        }
+                    }
+                ]
+            },
+            profit: {
+                title: 'Profit & Loss',
+                calcs: [
+                    {
+                        name: 'Profit / Loss %',
+                        inputs: ['Cost Price (₹)', 'Selling Price (₹)'],
+                        compute: ([cp, sp]) => {
+                            if (cp === 0) throw new Error("Cost Price can't be 0");
+                            const diff = round(sp - cp);
+                            const pct = round((Math.abs(diff) / cp) * 100);
+                            const label = diff >= 0 ? 'Profit' : 'Loss';
+                            return {
+                                result: `${label} = ₹${Math.abs(diff)} (${pct}%)`,
+                                steps: [
+                                    `${label} = |SP − CP| = |${sp} − ${cp}| = ₹${Math.abs(diff)}`,
+                                    `${label}% = (${Math.abs(diff)} / ${cp}) × 100 = ${pct}%`
+                                ]
+                            };
+                        }
+                    },
+                    {
+                        name: 'Find Selling Price',
+                        inputs: ['Cost Price (₹)', 'Profit % (use negative for loss)'],
+                        compute: ([cp, pct]) => {
+                            const sp = round(cp + (cp * pct) / 100);
+                            return { result: `₹${sp}`, steps: [`SP = CP × (1 + %/100) = ${cp} × (1 + ${pct}/100) = ₹${sp}`] };
+                        }
+                    },
+                    {
+                        name: 'Discount Amount',
+                        inputs: ['Marked Price (₹)', 'Discount (%)'],
+                        compute: ([mp, d]) => {
+                            const disc = round((mp * d) / 100);
+                            const sp = round(mp - disc);
+                            return {
+                                result: `Discount = ₹${disc}, SP = ₹${sp}`,
+                                steps: [
+                                    `Discount = (MP × D%) / 100 = (${mp} × ${d}) / 100 = ₹${disc}`,
+                                    `Selling Price = MP − Discount = ${mp} − ${disc} = ₹${sp}`
+                                ]
+                            };
+                        }
+                    }
+                ]
+            },
+            time: {
+                title: 'Time Based',
+                calcs: [
+                    {
+                        name: 'Speed = Distance / Time',
+                        inputs: ['Distance (km)', 'Time (hours)'],
+                        compute: ([d, t]) => {
+                            if (t === 0) throw new Error("Time can't be 0");
+                            const s = round(d / t);
+                            return { result: `${s} km/h`, steps: [`Speed = Distance / Time = ${d} / ${t} = ${s} km/h`] };
+                        }
+                    },
+                    {
+                        name: 'Time & Work (Days Together)',
+                        inputs: ["A's Days Alone", "B's Days Alone"],
+                        compute: ([a, b]) => {
+                            if (a + b === 0) throw new Error('Invalid values');
+                            const days = round((a * b) / (a + b));
+                            return {
+                                result: `${days} days`,
+                                steps: [
+                                    `A's 1-day work = 1/${a}, B's 1-day work = 1/${b}`,
+                                    `Together, days needed = (${a} × ${b}) / (${a} + ${b}) = ${round(a * b)} / ${a + b} = ${days} days`
+                                ]
+                            };
+                        }
+                    },
+                    {
+                        name: 'Relative Speed (Same Direction)',
+                        inputs: ['Speed A (km/h)', 'Speed B (km/h)'],
+                        compute: ([a, b]) => {
+                            const rel = round(Math.abs(a - b));
+                            return { result: `${rel} km/h`, steps: [`Relative speed (same direction) = |${a} − ${b}| = ${rel} km/h`] };
+                        }
+                    }
+                ]
+            },
+            algebra: {
+                title: 'Algebra',
+                calcs: [
+                    {
+                        name: 'Linear: ax + b = c',
+                        inputs: ['a', 'b', 'c'],
+                        compute: ([a, b, c]) => {
+                            if (a === 0) throw new Error("'a' cannot be 0");
+                            const x = round((c - b) / a);
+                            return { result: `x = ${x}`, steps: [`${a}x + ${b} = ${c}`, `${a}x = ${c} − ${b} = ${round(c - b)}`, `x = ${round(c - b)} / ${a} = ${x}`] };
+                        }
+                    },
+                    {
+                        name: 'Quadratic: ax² + bx + c = 0',
+                        inputs: ['a', 'b', 'c'],
+                        compute: ([a, b, c]) => {
+                            if (a === 0) throw new Error("'a' cannot be 0");
+                            const disc = round(b * b - 4 * a * c);
+                            if (disc < 0) {
+                                const real = round(-b / (2 * a));
+                                const imag = round(Math.sqrt(-disc) / (2 * a));
+                                return { result: `Complex roots: ${real} ± ${imag}i`, steps: [`Discriminant D = b² − 4ac = ${round(b * b)} − ${round(4 * a * c)} = ${disc}`, 'D is negative, so the roots are complex numbers.'] };
+                            }
+                            const sq = Math.sqrt(disc);
+                            const x1 = round((-b + sq) / (2 * a));
+                            const x2 = round((-b - sq) / (2 * a));
+                            return {
+                                result: `x₁ = ${x1}, x₂ = ${x2}`,
+                                steps: [
+                                    `Discriminant D = b² − 4ac = ${b}² − 4(${a})(${c}) = ${disc}`,
+                                    `x = (−b ± √D) / 2a = (${-b} ± ${round(sq)}) / ${2 * a}`,
+                                    `x₁ = ${x1}, x₂ = ${x2}`
+                                ]
+                            };
+                        }
+                    },
+                    {
+                        name: 'Simultaneous: a1x+b1y=c1, a2x+b2y=c2',
+                        inputs: ['a1', 'b1', 'c1', 'a2', 'b2', 'c2'],
+                        compute: ([a1, b1, c1, a2, b2, c2]) => {
+                            const det = round(a1 * b2 - a2 * b1);
+                            if (det === 0) throw new Error('No unique solution (lines are parallel)');
+                            const x = round((c1 * b2 - c2 * b1) / det);
+                            const y = round((a1 * c2 - a2 * c1) / det);
+                            return {
+                                result: `x = ${x}, y = ${y}`,
+                                steps: [
+                                    `Using Cramer's Rule: D = a1b2 − a2b1 = (${a1})(${b2}) − (${a2})(${b1}) = ${det}`,
+                                    `x = (c1b2 − c2b1) / D = ${round(c1 * b2 - c2 * b1)} / ${det} = ${x}`,
+                                    `y = (a1c2 − a2c1) / D = ${round(a1 * c2 - a2 * c1)} / ${det} = ${y}`
+                                ]
+                            };
+                        }
+                    }
+                ]
+            },
+            geometry: {
+                title: 'Geometry',
+                calcs: [
+                    {
+                        name: 'Triangle Area (Base & Height)',
+                        inputs: ['Base', 'Height'],
+                        compute: ([b, h]) => {
+                            const area = round(0.5 * b * h);
+                            return { result: area, steps: [`Area = ½ × base × height = ½ × ${b} × ${h} = ${area}`] };
+                        }
+                    },
+                    {
+                        name: 'Circle Area & Circumference',
+                        inputs: ['Radius'],
+                        compute: ([r]) => {
+                            const area = round(Math.PI * r * r);
+                            const circ = round(2 * Math.PI * r);
+                            return {
+                                result: `Area = ${area}, Circumference = ${circ}`,
+                                steps: [`Area = πr² = π × ${r}² = ${area}`, `Circumference = 2πr = 2 × π × ${r} = ${circ}`]
+                            };
+                        }
+                    },
+                    {
+                        name: 'Pythagoras (Find Hypotenuse)',
+                        inputs: ['Side A', 'Side B'],
+                        compute: ([a, b]) => {
+                            const c = round(Math.sqrt(a * a + b * b));
+                            return { result: c, steps: [`c = √(a² + b²) = √(${a}² + ${b}²) = √${round(a * a + b * b)} = ${c}`] };
+                        }
+                    }
+                ]
+            },
+            mensuration: {
+                title: 'Mensuration',
+                calcs: [
+                    {
+                        name: 'Rectangle: Area & Perimeter',
+                        inputs: ['Length', 'Width'],
+                        compute: ([l, w]) => {
+                            return {
+                                result: `Area = ${round(l * w)}, Perimeter = ${round(2 * (l + w))}`,
+                                steps: [`Area = length × width = ${l} × ${w} = ${round(l * w)}`, `Perimeter = 2 × (length + width) = 2 × (${l} + ${w}) = ${round(2 * (l + w))}`]
+                            };
+                        }
+                    },
+                    {
+                        name: 'Cube: Volume & Surface Area',
+                        inputs: ['Side'],
+                        compute: ([s]) => {
+                            const vol = round(s ** 3);
+                            const sa = round(6 * s * s);
+                            return { result: `Volume = ${vol}, Surface Area = ${sa}`, steps: [`Volume = side³ = ${s}³ = ${vol}`, `Surface Area = 6 × side² = 6 × ${s}² = ${sa}`] };
+                        }
+                    },
+                    {
+                        name: 'Cylinder: Volume & Curved Surface Area',
+                        inputs: ['Radius', 'Height'],
+                        compute: ([r, h]) => {
+                            const vol = round(Math.PI * r * r * h);
+                            const csa = round(2 * Math.PI * r * h);
+                            return { result: `Volume = ${vol}, CSA = ${csa}`, steps: [`Volume = πr²h = π × ${r}² × ${h} = ${vol}`, `Curved Surface Area = 2πrh = 2 × π × ${r} × ${h} = ${csa}`] };
+                        }
+                    }
+                ]
+            },
+            trigo: {
+                title: 'Trigonometry',
+                calcs: [
+                    {
+                        name: 'Trig Ratios of Angle (°)',
+                        inputs: ['Angle in Degrees'],
+                        compute: ([deg]) => {
+                            const rad = deg * Math.PI / 180;
+                            const sin = round(Math.sin(rad)), cos = round(Math.cos(rad));
+                            const tanRaw = Math.cos(rad);
+                            const tan = Math.abs(tanRaw) < 1e-10 ? null : round(Math.tan(rad));
+                            return {
+                                result: `sin = ${sin}, cos = ${cos}, tan = ${tan === null ? 'undefined' : tan}`,
+                                steps: [`sin(${deg}°) = ${sin}`, `cos(${deg}°) = ${cos}`, `tan(${deg}°) = ${tan === null ? 'undefined (90° case)' : tan}`]
+                            };
+                        }
+                    },
+                    {
+                        name: 'Height using Angle of Elevation',
+                        inputs: ['Distance from Base', 'Angle of Elevation (°)'],
+                        compute: ([dist, deg]) => {
+                            const rad = deg * Math.PI / 180;
+                            const height = round(dist * Math.tan(rad));
+                            return { result: height, steps: [`Height = Distance × tan(angle) = ${dist} × tan(${deg}°)`, `= ${dist} × ${round(Math.tan(rad))} = ${height}`] };
+                        }
+                    }
+                ]
+            },
+            stats: {
+                title: 'Statistics & DI',
+                calcs: [
+                    {
+                        name: 'Mean of 3 Numbers',
+                        inputs: ['Number 1', 'Number 2', 'Number 3'],
+                        compute: ([a, b, c]) => {
+                            const mean = round((a + b + c) / 3);
+                            return { result: mean, steps: [`Mean = (${a} + ${b} + ${c}) / 3 = ${round(a + b + c)} / 3 = ${mean}`] };
+                        }
+                    },
+                    {
+                        name: 'Percentage (Part of Whole) — DI',
+                        inputs: ['Part Value', 'Total Value'],
+                        compute: ([p, t]) => {
+                            if (t === 0) throw new Error("Total can't be 0");
+                            const pct = round((p / t) * 100);
+                            return { result: `${pct}%`, steps: [`% = (Part / Total) × 100 = (${p} / ${t}) × 100 = ${pct}%`] };
+                        }
+                    }
+                ]
+            },
+            advanced: {
+                title: 'Advanced Math',
+                calcs: [
+                    {
+                        name: 'Is Prime? + Factors',
+                        inputs: ['Number'],
+                        compute: ([n]) => {
+                            n = Math.round(n);
+                            if (n < 1) throw new Error('Please enter a whole number ≥ 1');
+                            if (n > 1e12) throw new Error('Please try a smaller number');
+                            if (n === 1) return { result: '1 is neither Prime nor Composite', steps: ['By definition, 1 has only one factor, so it is not counted as prime.'] };
+                            const factors = [];
+                            for (let i = 1; i * i <= n; i++) {
+                                if (n % i === 0) {
+                                    factors.push(i);
+                                    if (i !== n / i) factors.push(n / i);
+                                }
+                            }
+                            factors.sort((a, b) => a - b);
+                            const isPrime = factors.length === 2;
+                            return {
+                                result: isPrime ? `${n} is Prime ✅` : `${n} is NOT Prime ❌`,
+                                steps: [`Factors of ${n}: ${factors.join(', ')}`, isPrime ? `Exactly 2 factors (1 and ${n}) → Prime number` : `${factors.length} factors found → Not a prime number`]
+                            };
+                        }
+                    },
+                    {
+                        name: 'Permutation (nPr)',
+                        inputs: ['n', 'r'],
+                        compute: ([n, r]) => {
+                            n = Math.round(n); r = Math.round(r);
+                            if (n < 0 || r < 0) throw new Error('n and r must be non-negative');
+                            if (r > n) throw new Error('r cannot be greater than n');
+                            let val = 1;
+                            const parts = [];
+                            for (let i = 0; i < r; i++) { val *= (n - i); parts.push(n - i); }
+                            return { result: val, steps: [`nPr = n × (n−1) × ... (r terms)`, `${n}P${r} = ${parts.length ? parts.join(' × ') : 1} = ${val}`] };
+                        }
+                    },
+                    {
+                        name: 'Combination (nCr)',
+                        inputs: ['n', 'r'],
+                        compute: ([n, r]) => {
+                            n = Math.round(n); r = Math.round(r);
+                            if (n < 0 || r < 0) throw new Error('n and r must be non-negative');
+                            if (r > n) throw new Error('r cannot be greater than n');
+                            const rr = Math.min(r, n - r);
+                            let val = 1;
+                            for (let i = 0; i < rr; i++) val = val * (n - i) / (i + 1);
+                            val = Math.round(val);
+                            return { result: val, steps: ['nCr = n! / (r! × (n−r)!)', `${n}C${r} = ${val}`] };
+                        }
+                    }
+                ]
+            }
+        };
+
+        function openTopic(key) {
+            currentTopicKey = key;
+            const topic = mathTopics[key];
+            if (!topic) return;
+            document.getElementById('topic-title').innerText = topic.title;
+            const sel = document.getElementById('calc-selector');
+            sel.innerHTML = '';
+            topic.calcs.forEach((c, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.textContent = c.name;
+                sel.appendChild(opt);
+            });
+            sel.selectedIndex = 0;
+            loadCalculator();
+            openPage('topic');
+        }
+
+        function loadCalculator() {
+            const topic = mathTopics[currentTopicKey];
+            if (!topic) return;
+            const idx = parseInt(document.getElementById('calc-selector').value, 10) || 0;
+            const calc = topic.calcs[idx];
+            const inputsEl = document.getElementById('calc-inputs');
+            inputsEl.innerHTML = '';
+            calc.inputs.forEach((label, i) => {
+                const inp = document.createElement('input');
+                inp.type = 'number';
+                inp.step = 'any';
+                inp.id = `calc-in-${i}`;
+                inp.placeholder = label;
+                inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); runCalculator(); } });
+                inputsEl.appendChild(inp);
+            });
+            const out = document.getElementById('module-output');
+            out.style.display = 'none';
+            out.innerHTML = '';
+        }
+
+        function runCalculator() {
+            const topic = mathTopics[currentTopicKey];
+            if (!topic) return;
+            const idx = parseInt(document.getElementById('calc-selector').value, 10) || 0;
+            const calc = topic.calcs[idx];
+            const values = calc.inputs.map((_, i) => {
+                const el = document.getElementById(`calc-in-${i}`);
+                return el ? parseFloat(el.value) : NaN;
+            });
+            if (values.some(v => isNaN(v))) {
+                showToast('Please fill all fields with valid numbers');
+                return;
+            }
+            let res;
+            try {
+                res = calc.compute(values);
+            } catch (e) {
+                showToast(e.message || 'Calculation error');
+                return;
+            }
+            const out = document.getElementById('module-output');
+            out.style.display = 'block';
+            let html = `<div style="font-size:1.3rem; font-weight:800; color:var(--success); margin-bottom:8px;">Answer: ${res.result}</div>`;
+            if (res.steps && res.steps.length) {
+                html += '<div style="font-size:.92rem; opacity:.85;">' + res.steps.map(s => `<div style="padding:3px 0;">• ${s}</div>`).join('') + '</div>';
+            }
+            out.innerHTML = html;
+        }
+
+        /* =========================================================
+           SMART SOLVER — safe BODMAS expression evaluator (no eval)
+           ========================================================= */
+        function tokenize(expr) {
+            const tokens = [];
+            let i = 0;
+            while (i < expr.length) {
+                const ch = expr[i];
+                if (ch === ' ') { i++; continue; }
+                if ('+-*/()'.includes(ch)) { tokens.push(ch); i++; continue; }
+                if (/[0-9.]/.test(ch)) {
+                    let num = '';
+                    while (i < expr.length && /[0-9.]/.test(expr[i])) { num += expr[i]; i++; }
+                    if ((num.match(/\./g) || []).length > 1) throw new Error('Invalid number format');
+                    tokens.push(parseFloat(num));
+                    continue;
+                }
+                throw new Error(`Unexpected character: "${ch}"`);
+            }
+            return tokens;
+        }
+
+        function evalFlat(tokens, stepsOut) {
+            let pos = 0;
+            const peek = () => tokens[pos];
+            const next = () => tokens[pos++];
+
+            function parseFactor() {
+                let sign = 1;
+                while (peek() === '+' || peek() === '-') {
+                    if (next() === '-') sign *= -1;
+                }
+                const tok = next();
+                if (typeof tok !== 'number') throw new Error('Expected a number in expression');
+                return sign * tok;
+            }
+
+            function parseTerm() {
+                let val = parseFactor();
+                while (peek() === '*' || peek() === '/') {
+                    const op = next();
+                    const rhs = parseFactor();
+                    const prevVal = val;
+                    if (op === '*') { val = val * rhs; }
+                    else {
+                        if (rhs === 0) throw new Error('Division by zero is not allowed');
+                        val = val / rhs;
+                    }
+                    val = round(val);
+                    if (stepsOut) stepsOut.push(`${round(prevVal)} ${op === '*' ? '×' : '÷'} ${round(rhs)} = ${val}`);
+                }
+                return val;
+            }
+
+            function parseExpr() {
+                let val = parseTerm();
+                while (peek() === '+' || peek() === '-') {
+                    const op = next();
+                    const rhs = parseTerm();
+                    const prevVal = val;
+                    val = round(op === '+' ? val + rhs : val - rhs);
+                    if (stepsOut) stepsOut.push(`${round(prevVal)} ${op} ${round(rhs)} = ${val}`);
+                }
+                return val;
+            }
+
+            const result = parseExpr();
+            if (pos !== tokens.length) throw new Error('Invalid expression — check your syntax');
+            return result;
+        }
+
+        function insertSolveChar(ch) {
+            const el = document.getElementById('solve-in');
+            el.value += ch;
+            el.focus();
+        }
+
+        function clearSolveInput() {
+            const el = document.getElementById('solve-in');
+            el.value = '';
+            el.focus();
+            const outEl = document.getElementById('solve-out');
+            outEl.style.display = 'none';
+        }
+
+        function solveEquation() {
+            const inputEl = document.getElementById('solve-in');
+            const outEl = document.getElementById('solve-out');
+            const expr = inputEl.value.trim();
+
+            if (!expr) { showToast('Please enter an expression'); return; }
+
+            if (!/^[0-9+\-*/().\s]+$/.test(expr)) {
+                outEl.style.display = 'block';
+                outEl.innerHTML = '<p style="color:var(--danger); font-weight:600;">Only numbers and the symbols + − × ÷ ( ) are allowed.</p>';
+                return;
+            }
+            if (/[0-9)]\s*\(/.test(expr) || /\)\s*[0-9(]/.test(expr)) {
+                outEl.style.display = 'block';
+                outEl.innerHTML = '<p style="color:var(--danger); font-weight:600;">Please add × between a number/bracket and the next bracket — e.g. 2×(3+4).</p>';
+                return;
+            }
+
+            const steps = [];
+            let working = expr;
+
+            try {
+                let guard = 0;
+                while (working.includes('(')) {
+                    guard++;
+                    if (guard > 60) throw new Error('Expression is too complex to solve');
+                    const closeIdx = working.indexOf(')');
+                    if (closeIdx === -1) throw new Error('Mismatched brackets — every "(" needs a matching ")"');
+                    const openIdx = working.lastIndexOf('(', closeIdx);
+                    const inner = working.substring(openIdx + 1, closeIdx);
+                    const innerVal = round(evalFlat(tokenize(inner)));
+                    working = working.substring(0, openIdx) + innerVal + working.substring(closeIdx + 1);
+                    steps.push(`Solve the bracket (${inner}) = ${innerVal}  →  ${working}`);
+                }
+                if (working.includes(')')) throw new Error('Mismatched brackets — every ")" needs a matching "("');
+
+                const finalSteps = [];
+                const finalVal = evalFlat(tokenize(working), finalSteps);
+                finalSteps.forEach(s => steps.push(s));
+
+                outEl.style.display = 'block';
+                outEl.innerHTML =
+                    `<div style="font-size:1.6rem; font-weight:800; color:var(--success); margin-bottom:14px;">${expr} = ${round(finalVal)}</div>` +
+                    (steps.length ? steps.map(s => `<div style="padding:7px 0; border-bottom:1px solid var(--card-border); font-size:0.95rem;">${s}</div>`).join('') : '<div style="opacity:.7;">Straightforward calculation, no extra steps needed.</div>');
+            } catch (e) {
+                outEl.style.display = 'block';
+                outEl.innerHTML = `<p style="color:var(--danger); font-weight:600;">⚠️ ${e.message}</p>`;
+            }
+        }
+
+        /* =========================================================
+           SPEED QUIZ
+           ========================================================= */
+        function genQuizQuestion(category) {
+            const ops = category === 'mult' ? ['×'] : category === 'add' ? ['+', '−'] : ['+', '−', '×'];
+            const op = ops[Math.floor(Math.random() * ops.length)];
+            let a, b, answer;
+            if (op === '×') {
+                a = Math.floor(Math.random() * 11) + 2;
+                b = Math.floor(Math.random() * 11) + 2;
+                answer = a * b;
+            } else if (op === '+') {
+                a = Math.floor(Math.random() * 90) + 10;
+                b = Math.floor(Math.random() * 90) + 10;
+                answer = a + b;
+            } else {
+                a = Math.floor(Math.random() * 90) + 10;
+                b = Math.floor(Math.random() * (a + 1));
+                answer = a - b;
+            }
+            const text = `${a} ${op} ${b} = ?`;
+            const options = new Set([answer]);
+            let guardCount = 0;
+            while (options.size < 4 && guardCount < 50) {
+                guardCount++;
+                const delta = Math.floor(Math.random() * 12) - 6;
+                let fake = answer + delta;
+                if (fake === answer) fake += 1;
+                if (fake < 0) fake = answer + Math.abs(delta) + 1;
+                options.add(fake);
+            }
+            while (options.size < 4) options.add(answer + options.size + 1);
+            const optArr = Array.from(options);
+            for (let i = optArr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [optArr[i], optArr[j]] = [optArr[j], optArr[i]];
+            }
+            return { text, answer, options: optArr };
+        }
+
+        function startQuiz() {
+            quizState.score = 0;
+            quizState.timeLeft = 60;
+            quizState.category = document.getElementById('q-cat').value;
+            quizState.locked = false;
+            document.getElementById('quiz-setup').style.display = 'none';
+            document.getElementById('quiz-result').style.display = 'none';
+            document.getElementById('quiz-play').style.display = 'block';
+            document.getElementById('q-score').innerText = 'Score: 0';
+            document.getElementById('q-timer').innerText = '⏱ 60s';
+            nextQuizQuestion();
+            if (quizState.timer) clearInterval(quizState.timer);
+            quizState.timer = setInterval(() => {
+                quizState.timeLeft--;
+                const timerEl = document.getElementById('q-timer');
+                if (timerEl) timerEl.innerText = `⏱ ${quizState.timeLeft}s`;
+                if (quizState.timeLeft <= 0) endQuiz();
+            }, 1000);
+        }
+
+        function nextQuizQuestion() {
+            quizState.locked = false;
+            const q = genQuizQuestion(quizState.category);
+            quizState.currentAnswer = q.answer;
+            document.getElementById('q-text').innerText = q.text;
+            const optEl = document.getElementById('q-options');
+            optEl.innerHTML = '';
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'opt-btn';
+                btn.innerText = opt;
+                btn.onclick = () => selectQuizAnswer(opt, btn);
+                optEl.appendChild(btn);
+            });
+        }
+
+        function selectQuizAnswer(selected, btnEl) {
+            if (quizState.locked) return;
+            quizState.locked = true;
+            const correct = selected === quizState.currentAnswer;
+            const allBtns = document.querySelectorAll('#q-options .opt-btn');
+            allBtns.forEach(b => {
+                b.disabled = true;
+                if (parseInt(b.innerText, 10) === quizState.currentAnswer) b.classList.add('correct');
+                else if (b === btnEl) b.classList.add('wrong');
+            });
+            if (correct) {
+                quizState.score += 10;
+                document.getElementById('q-score').innerText = `Score: ${quizState.score}`;
+            }
+            setTimeout(() => {
+                if (quizState.timeLeft > 0 && quizState.timer) nextQuizQuestion();
+            }, 600);
+        }
+
+        function endQuiz() {
+            if (quizState.timer) { clearInterval(quizState.timer); quizState.timer = null; }
+            document.getElementById('quiz-play').style.display = 'none';
+            document.getElementById('quiz-result').style.display = 'block';
+            document.getElementById('qr-title').innerText = "Time's Up!";
+            document.getElementById('qr-score').innerText = `Score: ${quizState.score}`;
+            updateHighScore(quizState.score);
+        }
+
+        /* =========================================================
+           MOCK TEST — Army GD / UP Police style, +2 / -0.5 scoring
+           ========================================================= */
+        const mockQuestionBank = [
+            { q: 'What is 15% of 200?', options: [20, 25, 30, 35], answer: 2 },
+            { q: 'Find the HCF of 12 and 18.', options: [4, 6, 8, 3], answer: 1 },
+            { q: 'A man buys an item for ₹500 and sells it for ₹600. Find his profit %.', options: [10, 15, 20, 25], answer: 2 },
+            { q: 'If a train covers 180 km in 3 hours, what is its speed?', options: [50, 55, 60, 65], answer: 2 },
+            { q: 'What is the average of 10, 20, and 30?', options: [15, 20, 25, 30], answer: 1 },
+            { q: 'Simplify: 8 + 4 × 2', options: [24, 16, 20, 12], answer: 1 },
+            { q: 'Find the LCM of 4 and 6.', options: [8, 10, 12, 24], answer: 2 },
+            { q: 'What is the square root of 144?', options: [10, 11, 12, 13], answer: 2 },
+            { q: 'A shopkeeper gives a 10% discount on a ₹1000 item. Find the selling price.', options: [850, 900, 950, 990], answer: 1 },
+            { q: 'If 5 workers finish a task in 12 days, how many days will 10 workers take?', options: [4, 5, 6, 8], answer: 2 },
+            { q: 'What is 7² (7 squared)?', options: [14, 42, 49, 56], answer: 2 },
+            { q: 'Find the value of 100 ÷ 4 × 2.', options: [12.5, 25, 50, 100], answer: 2 },
+            { q: 'What is 3³ (3 cubed)?', options: [9, 18, 27, 36], answer: 2 },
+            { q: 'The ratio 20:25 in simplest form is:', options: ['5:4', '4:5', '2:3', '3:2'], answer: 1 },
+            { q: 'A car covers 240 km using 20 litres of fuel. Find its mileage (km/l).', options: [10, 12, 14, 16], answer: 1 }
+        ];
+
+        function startMock() {
+            const pool = [...mockQuestionBank];
+            for (let i = pool.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [pool[i], pool[j]] = [pool[j], pool[i]];
+            }
+            mockState.questions = pool.slice(0, 5);
+            mockState.current = 0;
+            mockState.score = 0;
+            mockState.correctCount = 0;
+            mockState.wrongCount = 0;
+            document.getElementById('mock-setup').style.display = 'none';
+            document.getElementById('mock-result').style.display = 'none';
+            document.getElementById('mock-play').style.display = 'block';
+            loadMockQuestion();
+        }
+
+        function loadMockQuestion() {
+            const q = mockState.questions[mockState.current];
+            document.getElementById('m-count').innerText = `Q ${mockState.current + 1}/5`;
+            document.getElementById('m-text').innerText = q.q;
+            const optEl = document.getElementById('m-options');
+            optEl.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'opt-btn';
+                btn.innerText = opt;
+                btn.onclick = () => answerMock(idx, btn);
+                optEl.appendChild(btn);
+            });
+        }
+
+        function answerMock(idx, btnEl) {
+            const q = mockState.questions[mockState.current];
+            const allBtns = document.querySelectorAll('#m-options .opt-btn');
+            allBtns.forEach(b => b.disabled = true);
+            if (idx === q.answer) {
+                mockState.score = round(mockState.score + 2);
+                mockState.correctCount++;
+                btnEl.classList.add('correct');
+            } else {
+                mockState.score = round(mockState.score - 0.5);
+                mockState.wrongCount++;
+                btnEl.classList.add('wrong');
+                allBtns[q.answer].classList.add('correct');
+            }
+            setTimeout(() => {
+                mockState.current++;
+                if (mockState.current < mockState.questions.length) loadMockQuestion();
+                else finishMock();
+            }, 700);
+        }
+
+        function finishMock() {
+            document.getElementById('mock-play').style.display = 'none';
+            document.getElementById('mock-result').style.display = 'block';
+            document.getElementById('mr-stats').innerHTML = `
+                <div>✅ Correct: ${mockState.correctCount}</div>
+                <div>❌ Wrong: ${mockState.wrongCount}</div>
+                <div style="font-weight:800; color:var(--primary); margin-top:10px;">Final Score: ${mockState.score.toFixed(1)} / 10</div>
+            `;
+            updateHighScore(mockState.score);
+        }
+
+        /* =========================================================
+           PREVIOUS PAPER VAULT — original practice sets
+           ========================================================= */
+        const paperBank = {
+            army: {
+                title: 'Army Agniveer GD — Maths Practice Set',
+                note: 'Original practice questions written in the pattern typically seen in Agniveer GD papers. Not a reproduction of any official paper.',
+                questions: [
+                    { q: '1. Find the LCM of 8 and 12.', a: '24' },
+                    { q: '2. A shopkeeper sells an article for ₹450 at a profit of 20%. Find the cost price.', a: '₹375 (CP = SP ÷ 1.20)' },
+                    { q: '3. What is 25% of 640?', a: '160' },
+                    { q: '4. A train 100 m long crosses a pole in 5 seconds. Find its speed in km/h.', a: '72 km/h (100m/5s = 20 m/s = 72 km/h)' },
+                    { q: '5. Find the square root of 225.', a: '15' }
+                ]
+            },
+            up: {
+                title: 'UP Police Constable — Maths Practice Set',
+                note: 'Original practice questions written in the pattern typically seen in UP Police Constable papers. Not a reproduction of any official paper.',
+                questions: [
+                    { q: '1. Simplify: 12 + 8 ÷ 4 − 2', a: '12 (8÷4=2, then 12+2−2=12)' },
+                    { q: '2. The average of 5 numbers is 24. Find their sum.', a: '120' },
+                    { q: '3. Find the HCF of 36 and 60.', a: '12' },
+                    { q: '4. A sum of ₹2000 gives Simple Interest of ₹240 in 2 years. Find the rate.', a: '6% per year (R = SI×100/(P×T))' },
+                    { q: '5. What is 15² − 5²?', a: '200 (225 − 25)' }
+                ]
+            }
+        };
+
+        function loadPaper() {
+            const key = document.getElementById('paper-select').value;
+            const contentEl = document.getElementById('paper-content');
+            if (!key) { contentEl.style.display = 'none'; return; }
+            const paper = paperBank[key];
+            contentEl.style.display = 'block';
+            contentEl.innerHTML = `
+                <div class="exam-box" style="text-align:left;">
+                    <h3 style="color:var(--primary);">${paper.title}</h3>
+                    <p style="font-size:0.85rem; opacity:0.7; margin-bottom:15px;">${paper.note}</p>
+                    ${paper.questions.map(item => `
+                        <div style="margin-bottom:14px; padding-bottom:14px; border-bottom:1px solid var(--card-border);">
+                            <div style="font-weight:600;">${item.q}</div>
+                            <div style="color:var(--success); margin-top:4px;">Answer: ${item.a}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        /* =========================================================
+           TIMETABLE
+           ========================================================= */
+        function loadTasks() {
+            timetableTasks = Store.get('ml_tasks', []);
+            renderTasks();
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.innerText = str;
+            return div.innerHTML;
+        }
+
+        function formatTime(t) {
+            if (!t) return '';
+            const [h, m] = t.split(':').map(Number);
+            const period = h >= 12 ? 'PM' : 'AM';
+            const h12 = h % 12 === 0 ? 12 : h % 12;
+            return `${h12}:${String(m).padStart(2, '0')} ${period}`;
+        }
+
+        function renderTasks() {
+            const listEl = document.getElementById('tt-list');
+            if (!listEl) return;
+            if (!timetableTasks.length) {
+                listEl.innerHTML = '<p style="opacity:0.6; padding:15px 0;">No tasks yet. Add your first study task above.</p>';
+                return;
+            }
+            const sorted = [...timetableTasks].sort((a, b) => a.time.localeCompare(b.time));
+            listEl.innerHTML = sorted.map(t => `
+                <div class="list-item" style="margin-bottom:8px;">
+                    <span>🕐 ${formatTime(t.time)} — ${escapeHtml(t.task)}</span>
+                    <button type="button" class="icon-btn" style="color:var(--danger); font-size:18px;" onclick="removeTask('${t.id}')">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function addTask() {
+            const taskInput = document.getElementById('tt-task');
+            const timeInput = document.getElementById('tt-time');
+            const task = taskInput.value.trim();
+            const time = timeInput.value;
+            if (!task || !time) {
+                showToast('Please enter both task and time');
+                return;
+            }
+            timetableTasks.push({ id: Date.now().toString(), task, time });
+            Store.set('ml_tasks', timetableTasks);
+            renderTasks();
+            taskInput.value = '';
+            timeInput.value = '';
+            showToast('Task added');
+        }
+
+        function removeTask(id) {
+            timetableTasks = timetableTasks.filter(t => t.id !== id);
+            Store.set('ml_tasks', timetableTasks);
+            renderTasks();
+        }
+
+        /* =========================================================
+           PROGRESS — streak + high score
+           ========================================================= */
+        function calculateStreak() {
+            const today = new Date().toISOString().split('T')[0];
+            const lastVisit = Store.get('ml_lastvisit', null);
+            let streak = Store.get('ml_streak', 0);
+            if (lastVisit === today) {
+                // already counted today, leave as-is
+            } else if (lastVisit) {
+                const diffDays = Math.round((new Date(today) - new Date(lastVisit)) / 86400000);
+                if (diffDays === 1) streak += 1;
+                else if (diffDays > 1) streak = 1;
+                else streak = streak || 1;
+            } else {
+                streak = 1;
+            }
+            Store.set('ml_lastvisit', today);
+            Store.set('ml_streak', streak);
+            return streak;
+        }
+
+        function updateStats() {
+            const streak = calculateStreak();
+            const highScore = Store.get('ml_highscore', 0);
+            const streakEl = document.getElementById('p-streak');
+            const scoreEl = document.getElementById('p-score');
+            if (streakEl) streakEl.innerText = streak;
+            if (scoreEl) scoreEl.innerText = highScore;
+        }
+
+        function updateHighScore(score) {
+            const current = Store.get('ml_highscore', 0);
+            if (score > current) Store.set('ml_highscore', score);
+            updateStats();
+        }
+
+        /* =========================================================
+           SETTINGS
+           ========================================================= */
+        function resetData(btn) {
+            if (!resetConfirmPending) {
+                resetConfirmPending = true;
+                const original = btn.innerText;
+                btn.dataset.original = original;
+                btn.innerText = '⚠️ Tap again to confirm';
+                clearTimeout(btn._resetTimer);
+                btn._resetTimer = setTimeout(() => {
+                    resetConfirmPending = false;
+                    btn.innerText = btn.dataset.original || '🗑️ Reset All Data';
+                }, 3000);
+                return;
+            }
+            resetConfirmPending = false;
+            clearTimeout(btn._resetTimer);
+            btn.innerText = btn.dataset.original || '🗑️ Reset All Data';
+
+            ['ml_theme', 'ml_tasks', 'ml_highscore', 'ml_streak', 'ml_lastvisit'].forEach(k => Store.remove(k));
+            document.body.classList.remove('dark-mode');
+            timetableTasks = [];
+            renderTasks();
+            updateStats();
+            showToast('All data has been reset');
+        }
+    </script>
+</body>
+</html>

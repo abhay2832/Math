@@ -1,320 +1,304 @@
-🧮 Math Learn Pro
+Math Learn Pro
 
-Learn Mathematics. Practice Smarter. Prepare Better.
+A Complete Mathematics Learning & Competitive Exam Practice Suite
+
+A browser-based mathematics platform that combines interactive calculators, mathematical problem-solving, timed quizzes, competitive exam practice, and personal study management in one unified application.
 
 <p align="center">
-  <strong>A Complete Mathematics Learning & Competitive Exam Preparation Platform</strong>
+  <a href="https://abhay2832.github.io/Math/">Live Application</a> ·
+  <a href="https://github.com/abhay2832/Math">Source Code</a> ·
+  <a href="https://github.com/abhay2832/Math/issues">Report an Issue</a>
 </p><p align="center">
-  Math Learn Pro brings mathematical learning, interactive practice, calculation tools, mock examinations, and study management together in one unified experience.
-</p><p align="center">
-  <a href="https://abhay2832.github.io/Math/">
-    <img src="https://img.shields.io/badge/🌐_Live_Demo-Visit_Website-4F46E5?style=for-the-badge" alt="Live Demo">
-  </a>
-  <a href="https://github.com/abhay2832/Math">
-    <img src="https://img.shields.io/badge/GitHub-Source_Code-181717?style=for-the-badge&logo=github" alt="GitHub">
-  </a>
-</p><p align="center">
-  <img src="https://img.shields.io/badge/HTML5-Frontend-E34F26?style=flat-square&logo=html5&logoColor=white">
-  <img src="https://img.shields.io/badge/CSS3-Styling-1572B6?style=flat-square&logo=css3&logoColor=white">
-  <img src="https://img.shields.io/badge/JavaScript-Logic-F7DF1E?style=flat-square&logo=javascript&logoColor=black">
-  <img src="https://img.shields.io/badge/Hosting-GitHub_Pages-222222?style=flat-square&logo=githubpages">
+  ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
+  ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
+  ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
+  ![GitHub Pages](https://img.shields.io/badge/Hosted%20on-GitHub%20Pages-222222?style=flat-square&logo=githubpages)
 </p>---
 
-📖 Overview
+01. Introduction
 
-Math Learn Pro is a browser-based mathematics learning and practice platform designed for students, competitive examination aspirants, and anyone who wants to improve their mathematical skills.
+Math Learn Pro is an integrated mathematics learning environment developed to make mathematical practice more accessible, organized, and efficient.
 
-Rather than separating learning resources, calculation utilities, practice tests, and study planning across different applications, Math Learn Pro combines them into a single, accessible platform.
+The application brings together essential mathematical utilities, topic-based calculation modules, interactive speed challenges, examination-style mock tests, and personal study management features.
 
-From basic arithmetic to advanced mathematics, from multiplication tables to timed quizzes, and from Army GD practice to UP Police mock examinations, the platform provides a structured environment for learning and improving mathematical proficiency.
+Instead of navigating between multiple tools and websites, users can access a variety of mathematics resources through a single web application.
 
-The primary objective is simple:
+The platform is particularly useful for students and competitive examination aspirants who want to strengthen their calculation skills, practise important mathematical concepts, and maintain a consistent study routine.
 
-Make Mathematics Accessible, Practice Interactive, and Preparation More Effective.
+Core Philosophy: Learn mathematics, improve calculation speed, practise consistently, and prepare with confidence.
 
-✨ Core Features
+02. Platform Capabilities
 
-01. 🧮 Quick Mathematics Tools
+Mathematics Utilities
 
-A collection of frequently used mathematical resources for quick reference and practice.
+A dedicated collection of quick-reference mathematical tools.
 
-Tool| Functionality
-Multiplication Tables| Generate tables from 2 to 1000
-Squares| Explore squares from 1² to 50²
-Cubes| Explore cubes from 1³ to 30³
-Square Roots| Browse square roots from 1 to 100
-Smart Math Solver| Solve supported mathematical expressions step by step
+Utility| Supported Range / Function
+Multiplication Tables| 2–1000
+Squares| 1–50
+Cubes| 1–30
+Square Roots| 1–100
+Smart Math Solver| Supported arithmetic expressions
 
-02. 📚 Mathematics Learning Modules
+Mathematical Modules
 
-Explore multiple mathematics categories through a unified module-based interface.
+The application provides dedicated calculation modules covering multiple mathematical disciplines.
 
-- Basic Arithmetic
-- Percentage & Ratio
-- Profit & Loss
-- Time-Based Mathematics
-- Algebra
-- Geometry
-- Mensuration
-- Trigonometry
-- Statistics & Data Interpretation
-- Advanced Mathematics
+Module| Available Calculations
+Basic Arithmetic| HCF, LCM, Average, Simple Interest
+Percentage & Ratio| Percentage, Percentage Change, Ratio Simplification
+Profit & Loss| Profit/Loss Percentage, Selling Price, Discount
+Time-Based Mathematics| Speed, Time & Work, Relative Speed
+Algebra| Linear and Quadratic Equations
+Geometry| Geometry calculations
+Mensuration| Mensuration calculations
+Trigonometry| Trigonometric calculations
+Statistics & DI| Statistics and Data Interpretation
+Advanced Mathematics| Advanced mathematical calculations
 
-Each module provides a dedicated space for selecting question types and performing calculations.
+Each calculation module uses a structured input-and-result interface, with formula-based explanations where implemented.
 
-03. ⚡ Math Speed Quiz
+Smart Math Solver
 
-Improve calculation speed and accuracy with an interactive timed challenge.
+A dedicated expression-solving utility for supported arithmetic operations.
 
-Highlights:
+Capabilities include:
 
-- 60-second quiz challenge
-- Mathematical question practice
-- Live score tracking
-- Countdown timer
-- Final score display
+- Arithmetic expression input.
+- Addition and subtraction.
+- Multiplication and division.
+- Parentheses support.
+- Interactive mathematical input controls.
+- Step-by-step solution display.
 
-Designed to encourage faster calculations and consistent practice.
+Speed Quiz Engine
 
-04. 🎯 Competitive Examination Preparation
+An interactive 60-second mathematics challenge designed to improve calculation speed.
 
-Math Learn Pro includes dedicated practice functionality for competitive examination aspirants.
+Quiz categories:
 
-Supported examination categories:
+- Mixed Operations
+- Multiplication & Tables
+- Addition & Subtraction
+
+Quiz experience:
+
+- Countdown-based challenges.
+- Multiple-choice questions.
+- Real-time score updates.
+- Final performance summary.
+- High-score tracking.
+
+Competitive Examination Practice
+
+Dedicated mock examination functionality for:
 
 - Army Agniveer GD
 - UP Police Constable
 
-Mock Test Features:
+Assessment system:
 
-- Interactive multiple-choice questions
-- Question-by-question navigation
-- Automatic score calculation
-- +2 marks for correct answers
-- -0.5 marks for incorrect answers
-- Final mock test report
+Parameter| Configuration
+Questions per Mock| 5
+Correct Answer| +2 Marks
+Incorrect Answer| -0.5 Marks
+Maximum Score| 10 Marks
+Result| Automatic evaluation
 
-05. 📄 Previous Year Paper Vault
+Questions are selected from the application's built-in question bank.
 
-A dedicated section for examination-oriented mathematics practice.
+Previous Paper Vault
 
-Available practice categories include:
+A dedicated practice section containing original mathematics practice sets based on common examination patterns.
 
-- Army Agniveer GD – Mathematics Practice Set
-- UP Police Constable – Mathematics Practice Set
+Available categories:
 
-Users can select an examination category and access its associated practice content.
+- Army Agniveer GD Mathematics Practice Set
+- UP Police Constable Mathematics Practice Set
 
-06. 📅 Personal Study Timetable
+The included questions are original practice material and are not presented as reproductions of official examination papers.
 
-Organize your mathematics preparation with a simple study scheduling system.
+Personal Study Management
 
-- Add study tasks.
+Study Timetable
+
+- Create study tasks.
 - Assign specific times.
-- View scheduled activities.
-- Manage your study routine.
+- View scheduled tasks.
+- Remove completed or unnecessary tasks.
+- Automatically sort tasks by time.
 
-07. 📈 Progress Tracking
+Progress Dashboard
 
-Monitor your learning activity through a dedicated progress dashboard.
+- Daily study streak.
+- Highest quiz score.
+- Persistent progress indicators.
 
-Available indicators include:
+Personalization
 
-- Daily study streak
-- Highest quiz score
-
-Designed to encourage consistency and help users stay motivated.
-
-08. 🎨 Personalization & Settings
-
-A customizable interface with useful user preferences.
-
-- Light and Dark Mode
-- Theme preference persistence
-- Reset application data
-- Responsive user interface
+- Light and Dark themes.
+- Saved theme preferences.
+- Browser-based data persistence.
+- Reset application data.
+- Responsive interface.
 
 ---
 
-🖥️ User Experience
+03. Application Architecture
 
-Math Learn Pro is designed around a simple dashboard-based navigation system.
+Math Learn Pro currently follows a lightweight, client-side architecture.
 
-The interface organizes tools, learning modules, quizzes, examinations, and study management into dedicated sections.
+Layer| Implementation
+Structure| HTML5
+Presentation| CSS3
+Application Logic| Vanilla JavaScript
+State Management| JavaScript application state
+Local Persistence| Browser Local Storage
+Fallback Storage| In-memory storage
+Deployment| GitHub Pages
 
-Design Highlights:
+Storage Strategy
 
-- Modern dashboard layout
-- Clean visual hierarchy
-- Interactive interface elements
-- Responsive page structure
-- Light and Dark themes
-- Mobile-friendly navigation
+The application uses a small storage abstraction to manage persistent browser data.
 
-🛠️ Technology Stack
+Supported stored information includes:
 
-The project uses standard web technologies.
+- Theme preferences.
+- Study timetable entries.
+- Quiz high scores.
+- Daily streak information.
+- Last recorded visit date.
 
-Technology| Purpose
-HTML5| Application structure
-CSS3| Layout, styling and visual design
-JavaScript| Application logic and interactions
-Browser Local Storage| Saving supported user preferences and study data
-GitHub Pages| Static website hosting
+When browser storage is unavailable, the application uses an in-memory fallback.
 
-Architecture
+Data Scope: Information is stored locally in the user's browser. There is currently no cloud-based account synchronization or centralized database.
 
-The current implementation follows a lightweight frontend architecture.
+04. User Interface & Experience
 
-- Presentation Layer: HTML and CSS.
-- Application Layer: JavaScript-based functionality.
-- Storage Layer: Browser Local Storage with an in-memory fallback.
-- Deployment Layer: GitHub Pages.
+The interface is designed around a dashboard-driven navigation system.
 
-The current repository keeps the application implementation primarily inside "index.html".
+Key design considerations include:
 
-🚀 Getting Started
+- Minimal and organized navigation.
+- Card-based dashboard layout.
+- Consistent visual styling.
+- Interactive calculation panels.
+- Responsive grid layouts.
+- Light and Dark appearance modes.
+- Reduced-motion accessibility support.
+- Keyboard-based input shortcuts for supported actions.
 
-You can access Math Learn Pro directly through the hosted website or run the source code locally.
+The application is intended to provide a consistent experience across mobile and desktop browsers.
 
-Option 1: Use the Live Website
+05. Getting Started
 
-Visit:
+Prerequisites
 
-https://abhay2832.github.io/Math/
+- A modern web browser.
+- Git (for cloning the repository).
+- A code editor (optional).
 
-No installation is required to access the hosted application.
+Installation
 
-Option 2: Run Locally
-
-Step 1 — Clone the Repository
+Clone the repository:
 
 git clone https://github.com/abhay2832/Math.git
 
-Step 2 — Enter the Project Directory
+Navigate to the project directory:
 
 cd Math
 
-Step 3 — Launch the Application
+Run Locally
 
-Open "index.html" in your preferred web browser.
+The current application does not require a package manager or build process.
 
-Alternatively, use a local development server.
+Open "index.html" directly in a browser.
 
-📂 Repository Structure
+Alternatively, launch it through a local development server.
+
+Live Deployment
+
+The application is publicly accessible through GitHub Pages.
+
+Live URL:
+https://abhay2832.github.io/Math/
+
+06. Repository Structure
 
 Math/
 │
-├── index.html       # Main application
-├── README.md        # Project documentation
-└── .gitignore       # Git ignore configuration
+├── index.html
+│   ├── Application markup
+│   ├── Embedded styles
+│   └── JavaScript functionality
+│
+├── README.md
+│   └── Project documentation
+│
+└── .gitignore
+    └── Git ignore configuration
 
-💾 Data & Storage
+The current implementation is maintained primarily within a single HTML entry point.
 
-Math Learn Pro uses browser-based storage for supported application data.
+07. Development Roadmap
 
-The storage implementation includes:
+The following areas represent potential directions for future development.
 
-- Local Storage integration
-- JSON-based data handling
-- Default fallback values
-- In-memory fallback when browser storage is unavailable
+- [ ] Expand the mathematical calculation library.
+- [ ] Introduce additional practice categories.
+- [ ] Extend competitive examination support.
+- [ ] Improve progress analytics.
+- [ ] Add more interactive learning experiences.
+- [ ] Enhance accessibility and usability.
+- [ ] Introduce additional customization options.
+- [ ] Improve application architecture and maintainability.
 
-Theme preferences and supported study-related information can be retained in the browser.
+08. Contributing
 
-Note: Browser storage is local to the user's browser environment. Clearing browser data or resetting application data may remove saved information.
+Contributions and constructive feedback are welcome.
 
-🌐 Deployment
+To propose an improvement:
 
-The project is hosted using GitHub Pages.
+1. Fork the repository.
+2. Create a feature branch.
+3. Implement your changes.
+4. Test the application.
+5. Submit a Pull Request describing your contribution.
 
-Live Application:
+For bugs, suggestions, or feature requests, use the repository's Issues section.
 
-https://abhay2832.github.io/Math/
-
-Source Repository:
-
-https://github.com/abhay2832/Math
-
-The application is accessible through a modern web browser on supported devices.
-
-🔮 Future Development
-
-Math Learn Pro is designed to be expandable.
-
-Potential areas for future development include:
-
-- More mathematics topics and calculation tools.
-- Expanded question banks.
-- Additional competitive examination categories.
-- More mock test configurations.
-- Enhanced performance analytics.
-- Improved learning progress reports.
-- Additional customization options.
-- Further accessibility improvements.
-
-🤝 Contributing
-
-Contributions, suggestions, and improvements are welcome.
-
-If you are interested in improving Math Learn Pro:
-
-1. Fork this repository.
-2. Create a new feature branch.
-3. Implement your improvements.
-4. Test your changes.
-5. Submit a Pull Request with a clear description.
-
-Every meaningful contribution helps improve the learning experience.
-
-🐛 Issues & Feedback
-
-Found a bug or have an idea for a new feature?
-
-Please use the GitHub Issues section:
-
+Issue Tracker:
 https://github.com/abhay2832/Math/issues
 
-Include relevant details so that issues and suggestions can be understood and addressed effectively.
+09. Project Information
 
-📜 License
-
-No explicit open-source license is currently specified in this repository.
-
-Please contact the project owner regarding reuse, modification, or redistribution permissions.
-
-👨‍💻 Project Information
-
-Detail| Information
-Project Name| Math Learn Pro
+Property| Details
+Project| Math Learn Pro
 Repository| abhay2832/Math
-Category| Education / Mathematics
-Application Type| Web Application
-Development| HTML, CSS & JavaScript
+Category| Mathematics & Education
+Application| Client-side Web Application
+Languages| HTML, CSS, JavaScript
 Hosting| GitHub Pages
-Status| Publicly Available
+Deployment| Static Web Hosting
+Data Storage| Browser Local Storage
+License| Not yet specified
 
-⭐ Support the Project
+10. Acknowledgements
 
-If you find Math Learn Pro useful, consider supporting its development.
+Math Learn Pro is built around the idea of bringing everyday mathematical learning and examination practice into one accessible environment.
 
-- ⭐ Star the repository.
-- 🔀 Share the project.
-- 💡 Suggest new features.
-- 🐛 Report issues.
-- 🤝 Contribute improvements.
-
-Your support helps the project grow.
+The project aims to provide a practical learning experience for students, mathematics enthusiasts, and competitive examination aspirants.
 
 ---
 
-<p align="center">
-  <h2 align="center">📐 Learn More. Calculate Faster. Achieve More.</h2>
-  <p align="center">
-    <strong>Math Learn Pro</strong><br>
-    One Platform. Multiple Mathematics Tools. Better Preparation.
-  </p>
-  <p align="center">
-    Developed with ❤️ by <a href="https://github.com/abhay2832">Abhay2832</a>
-  </p>
+<p align="center">MATH LEARN PRO
+
+Learn with Purpose. Practice with Precision. Progress with Confidence.
+
+<br><a href="https://abhay2832.github.io/Math/"><strong>Explore Math Learn Pro →</strong></a>
+
+<br><br>
+
+Developed by Abhay2832
+
 </p>
